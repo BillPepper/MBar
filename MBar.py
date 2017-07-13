@@ -62,6 +62,12 @@ def getIP():
     return proc[0]
 
 
+def getAvgPing():
+    pingCmd = ["ping 8.8.8.8", "-a"]
+    proc = subprocess.check_output(pingCmd).split(" ")
+    print(proc)
+
+
 def renderViewOne():
     outString = "cpu: " + str(getCPUUsage()) + " | " + \
         "mem: " + str(bytes2human(getUsedMemory())) + " / " + \
