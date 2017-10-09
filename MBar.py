@@ -3,6 +3,7 @@ from subprocess import call
 import time
 import psutil
 import subprocess
+import atexit
 
 
 # enableViewOne = True
@@ -59,6 +60,7 @@ def getBattery():
 def getIP():
     ipCmd = ["hostname", "-I"]
     proc = subprocess.check_output(ipCmd).split(" ")
+
     return proc[0]
 
 
@@ -66,6 +68,11 @@ def getAvgPing():
     pingCmd = ["ping 8.8.8.8", "-a"]
     proc = subprocess.check_output(pingCmd).split(" ")
     print(proc)
+
+def sendNotification(msg):
+    notifyCmd = ["notify-send", msg]
+    proc = subprocess.check_output(notifyCmd).split(" ")
+    return proc
 
 
 def renderViewOne():
@@ -93,10 +100,17 @@ def updateBar(line):
     call(["xsetroot", "-name", line])
 
 
+def exit():
+    updateBar('-- no data --')
+
+
 while (True):
+    sendNotification("hello World")
     updateBar(renderViewOne())
 
     time.sleep(1)
+
+    atexit.register(exit)
 '''
     if (activeView == 0):
         updateBar(renderViewOne())
