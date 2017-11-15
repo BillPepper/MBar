@@ -69,10 +69,10 @@ def getAvgPing():
     proc = subprocess.check_output(pingCmd).split(" ")
     print(proc)
 
-def sendNotification(msg):
-    notifyCmd = ["notify-send", msg]
-    proc = subprocess.check_output(notifyCmd).split(" ")
-    return proc
+#def sendNotification(msg):
+#    notifyCmd = ["notify-send", msg]
+#    proc = subprocess.check_output(notifyCmd).split(" ")
+#    return proc
 
 
 def renderViewOne():
@@ -105,7 +105,7 @@ def exit():
 
 
 while (True):
-    sendNotification("hello World")
+    # sendNotification("hello World")
     updateBar(renderViewOne())
 
     time.sleep(1)
