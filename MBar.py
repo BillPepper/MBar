@@ -54,7 +54,7 @@ def bytes2human(n):
 def getBattery():
     acpiCmd = ["acpi", "-b"]
     proc = subprocess.check_output(acpiCmd).split(" ")
-    return proc[3].strip(",")
+    return proc[3].strip(",").replace("\n", "")
 
 
 def getIP():
@@ -75,7 +75,7 @@ def getKbdLayout():
     kbdLyoCmd = ["setxkbmap", "-query"]
     proc = subprocess.check_output(kbdLyoCmd).split(" ")
     print(proc[17])
-    return proc[17]
+    return proc[17].replace("\n", "")
 
 # def sendNotification(msg):
 #    notifyCmd = ["notify-send", msg]
