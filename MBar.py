@@ -67,23 +67,32 @@ def getIP():
 def getAvgPing():
     pingCmd = ["ping 8.8.8.8", "-a"]
     proc = subprocess.check_output(pingCmd).split(" ")
-    print(proc)
 
-#def sendNotification(msg):
+    return proc[0]
+
+
+def getKbdLayout():
+    kbdLyoCmd = ["setxkbmap", "-query"]
+    proc = subprocess.check_output(kbdLyoCmd).split(" ")
+    print(proc[17])
+    return proc[17]
+
+# def sendNotification(msg):
 #    notifyCmd = ["notify-send", msg]
 #    proc = subprocess.check_output(notifyCmd).split(" ")
 #    return proc
 
 
 def renderViewOne():
-    outString = "cpu: " + str(getCPUUsage()) + " | " + \
-        "mem: " + str(bytes2human(getUsedMemory())) + " / " + \
-        str(bytes2human(getInstalledMemory())) + " | batt: " + \
-        getBattery() + " | ip: " + \
-        getIP() + " | " + \
-        getDay() + ", " + \
-        getDate() + " | " + \
-        getTime()
+    outString = "kbd: " + str(getKbdLayout()) + " | " + \
+    "cpu: " + str(getCPUUsage()) + " | " + \
+    "mem: " + str(bytes2human(getUsedMemory())) + " / " + \
+    str(bytes2human(getInstalledMemory())) + " | batt: " + \
+    getBattery() + " | ip: " + \
+    getIP() + " | " + \
+    getDay() + ", " + \
+    getDate() + " | " + \
+    getTime()
 
     if (outputEnabled):
         print(str(outString))
