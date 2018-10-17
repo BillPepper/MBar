@@ -5,11 +5,7 @@ import psutil
 import subprocess
 
 
-# enableViewOne = True
-# enableViewTwo = True
-# activeView = 0
-# interval = 5
-outputEnabled = True
+outputEnabled = False
 
 
 def getTime():
@@ -53,41 +49,50 @@ def bytes2human(n):
 def getBattery():
     acpiCmd = ["acpi", "-b"]
     proc = subprocess.check_output(acpiCmd).split(" ")
-    return proc[3].strip(",")
+    return proc[3].strip(",").replace("\n", "")
 
 
 def getIP():
     ipCmd = ["hostname", "-I"]
     proc = subprocess.check_output(ipCmd).split(" ")
+
     return proc[0]
 
 
-def getAvgPing():
-    pingCmd = ["ping 8.8.8.8", "-a"]
-    proc = subprocess.check_output(pingCmd).split(" ")
-    print(proc)
+def getKbdLayout():
+    kbdLyoCmd = ["setxkbmap", "-query"]
+    proc = subprocess.check_output(kbdLyoCmd).split(" ")
+    return proc[17].replace("\n", "")
+
+
+def getHDDSpace():
+    return bytes2human(psutil.disk_usage('/').percent)
+
+
+def getCpuTemp():
+    cpuTempCmd = ["sensors"]
+    proc = subprocess.check_output(cpuTempCmd).split(" ")
+
+    return proc[6]
 
 
 def renderViewOne():
-    outString = "cpu: " + str(getCPUUsage()) + " | " + \
-        "mem: " + str(bytes2human(getUsedMemory())) + " / " + \
-        str(bytes2human(getInstalledMemory())) + " | batt: " + \
-        getBattery() + " | ip: " + \
-        getIP() + " | " + \
-        getDay() + ", " + \
-        getDate() + " | " + \
-        getTime()
+    outString = "kbd: " + str(getKbdLayout()) + " | " + \
+    "cpu: " + str(getCPUUsage()) + " " + \
+    getCpuTemp() + " | " + \
+    "mem: " + str(bytes2human(getUsedMemory())) + " / " + \
+    str(bytes2human(getInstalledMemory())) + " | batt: " + \
+    getBattery() + " | hdd: " + \
+    getHDDSpace() + " | ip: " + \
+    getIP() + " | " + \
+    getDay() + ", " + \
+    getDate() + " | " + \
+    getTime()
 
     if (outputEnabled):
         print(str(outString))
 
     return outString
-
-
-def renderViewTwo():
-    outString = "Testting my tool"
-    return outString
-
 
 def updateBar(line):
     call(["xsetroot", "-name", line])
@@ -95,16 +100,4 @@ def updateBar(line):
 
 while (True):
     updateBar(renderViewOne())
-
     time.sleep(1)
-'''
-    if (activeView == 0):
-        updateBar(renderViewOne())
-        activeView = 1
-    else:
-        updateBar(renderViewTwo())
-        activeView = 0
-
-    interval = interval -1
-
-'''
