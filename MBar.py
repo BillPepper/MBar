@@ -82,17 +82,25 @@ def getKbdLayout():
 #    proc = subprocess.check_output(notifyCmd).split(" ")
 #    return proc
 
+def getHDDSpace():
+    hddCmd = ["df", "-h"]
+    proc = subprocess.check_output(hddCmd).split(" ")
+    print(proc[69])
+    return(proc[69])
 
 def renderViewOne():
     outString = "kbd: " + str(getKbdLayout()) + " | " + \
     "cpu: " + str(getCPUUsage()) + " | " + \
     "mem: " + str(bytes2human(getUsedMemory())) + " / " + \
     str(bytes2human(getInstalledMemory())) + " | batt: " + \
-    getBattery() + " | ip: " + \
+    getBattery() + " | hdd: " + \
+    getHDDSpace() + " | ip: " + \
     getIP() + " | " + \
     getDay() + ", " + \
     getDate() + " | " + \
     getTime()
+
+    getHDDSpace()
 
     if (outputEnabled):
         print(str(outString))
