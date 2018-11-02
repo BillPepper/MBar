@@ -5,11 +5,6 @@ import psutil
 import subprocess
 import atexit
 
-
-# enableViewOne = True
-# enableViewTwo = True
-# activeView = 0
-# interval = 5
 outputEnabled = True
 
 
@@ -77,16 +72,13 @@ def getKbdLayout():
     print(proc[17])
     return proc[17].replace("\n", "")
 
-# def sendNotification(msg):
-#    notifyCmd = ["notify-send", msg]
-#    proc = subprocess.check_output(notifyCmd).split(" ")
-#    return proc
 
 def getHDDSpace():
     hddCmd = ["df", "-h"]
     proc = subprocess.check_output(hddCmd).split(" ")
     print(proc[69])
     return(proc[69])
+
 
 def renderViewOne():
     outString = "kbd: " + str(getKbdLayout()) + " | " + \
@@ -100,16 +92,9 @@ def renderViewOne():
     getDate() + " | " + \
     getTime()
 
-    getHDDSpace()
-
     if (outputEnabled):
         print(str(outString))
 
-    return outString
-
-
-def renderViewTwo():
-    outString = "Testting my tool"
     return outString
 
 
@@ -122,20 +107,5 @@ def exit():
 
 
 while (True):
-    # sendNotification("hello World")
     updateBar(renderViewOne())
-
     time.sleep(1)
-
-    atexit.register(exit)
-'''
-    if (activeView == 0):
-        updateBar(renderViewOne())
-        activeView = 1
-    else:
-        updateBar(renderViewTwo())
-        activeView = 0
-
-    interval = interval -1
-
-'''
